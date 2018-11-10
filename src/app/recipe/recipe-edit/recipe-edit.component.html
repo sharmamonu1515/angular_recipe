@@ -1,0 +1,87 @@
+<div class="row">
+  <div class="col-xs-12">
+    <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-xs-12">
+            <button type="submit" 
+                    class="btn btn-success"
+                    [disabled]="!recipeForm.valid">Save</button>
+            <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
+        </div>  
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text"
+                   id="name"
+                   formControlName="name"
+                   class="form-control" >
+                   <span class="error" 
+                    *ngIf="!recipeForm.get('name').valid && recipeForm.get('name').touched">This field is required !</span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+          <div class="col-xs-12">
+            <div class="form-group">
+              <label for="imagePath">ImagePath</label>
+              <input type="text"
+                     id="imagePath"
+                     formControlName="imagePath" 
+                     class="form-control"
+                     #imagePath>
+                     <span class="error" 
+                     *ngIf="!recipeForm.get('imagePath').valid && recipeForm.get('name').touched">This field is required !</span>
+            </div>
+          </div>
+       </div>
+       <div class="row" *ngIf="imagePath.value != ''">
+          <div class="col-xs-12">
+            <div class="form-group">
+             <img [src]="imagePath.value" height="350px" width="100%">
+            </div>
+          </div>
+       </div>
+       <div class="row">
+          <div class="col-xs-12">
+            <div class="form-group">
+              <label for="description">Description</label>
+              <textarea type="text"
+                     id="description"
+                     formControlName="description"
+                     rows="6" 
+                     class="form-control"></textarea>
+                     <span class="error" 
+                     *ngIf="!recipeForm.get('description').valid && recipeForm.get('name').touched">This field is required !</span>
+            </div>
+          </div>
+       </div>
+       <div class="row">
+          <div class="col-xs-12" formArrayName="ingredients"
+          *ngFor="let ingredientCtrl of recipeForm.get('ingredients').controls; let i = index;" style="margin-bottom: 10px">
+            <div class="form-group"
+              [formGroupName]="i"
+              >
+              <div class="col-xs-8 p-0">
+                <input type="text" 
+                  class="form-control" 
+                  formControlName="name">
+                 
+              </div>
+              <div class="col-xs-2">
+                  <input type="number" 
+                        class="form-control"
+                        formControlName="ammount">
+              </div>
+              <div class="col-xs-2">
+                  <button type="button" class="btn btn-danger btn-sm" (click)="deleteIngredient(i)">X</button>
+              </div>
+            </div>
+          </div>
+       </div>
+       <hr>
+       <button class="btn btn-info" type="button" (click)="onAddIngredient()">Add Ingredient</button>
+    </form>
+  </div>
+</div>
